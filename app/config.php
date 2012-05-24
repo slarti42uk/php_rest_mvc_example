@@ -12,7 +12,7 @@
  * Constants
  **/
 
-define('DB_SERVER', 'localhost');
-define('DB_DATABASE', 'proxama_students');
-define('DB_SERVER_USERNAME', 'proxama_students');
-define('DB_SERVER_PASSWORD', 'ei5cgQWouD7ycg');
+define('DB_SERVER', getenv('MYSQL_DB_HOST'));
+define('DB_DATABASE', getenv('MYSQL_DB_NAME'));
+define('DB_SERVER_USERNAME', getenv('MYSQL_USERNAME'));
+define('DB_SERVER_PASSWORD', getenv('MYSQL_PASSWORD'));

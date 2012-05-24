@@ -27,30 +27,37 @@ class Students extends Controller
   {
     parent::set_resource($resource);
     
-    if ($this->action == "create" || $this->action == "update") //Then this is the POST data
+    switch($this->action)
     {
-      // need to sanitise the input here
-      $student = new Student();
-      if ($this->action == "update")
-      {
-        $student->find($_POST['id']);
-      }
-      foreach ($resource as $key => $value) {
-        // check the key is safe for a start
-        try{
-          if (!in_array($key, $this->attr_accessible))
-          {
-            throw new Exception("Cannot set field");
+      case "create":
+      case "update":
+        // need to sanitise the input here
+        $student = new Student();
+        if ($this->action == "update")
+        {
+          $student->find($_POST['id']);
+        }
+        foreach ($resource as $key => $value) {
+          // check the key is safe for a start
+          try{
+            if (!in_array($key, $this->attr_accessible))
+            {
+              throw new Exception("Cannot set field");
+            }
+            $student->$key = $value;
           }
-          $student->$key = $value;
+          catch (Exception $e) {
+            $e->getMessage();
+          }
         }
-        catch (Exception $e) {
-          $e->getMessage();
-        }
-      }
-      $student->save();
-      // now redirect
-      header("Location: /students");
+        $student->save();
+        // now redirect
+        header("Location: /students");
+        break;
+      case 'destroy':
+        $resource->destroy();
+        header("Location: /students");
+        break;
     }
   }
 }

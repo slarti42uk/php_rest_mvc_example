@@ -64,6 +64,11 @@ class Model
     return $collection;
   }
   
+  public function destroy()
+  {
+    $this->delete($this->id);
+  }
+  
   public function save()
   {
     $isNew = empty($this->id) ? true : false;
@@ -107,6 +112,19 @@ class Model
     $sql .= $dataSql;
     $sql .= sprintf(" WHERE `id` = '%d'", mysql_real_escape_string($id));
     // echo $sql;
+    try {
+      $result = mysql_query($sql);
+    }
+    catch(Exception $e) {
+      echo $e->getMessage();
+    }
+    return $result;
+  }
+  
+  private function delete($id)
+  {
+    $sql = sprintf("DELETE FROM %s WHERE `id` = '%d'", $this->get_table_name(),mysql_real_escape_string($id));
+    echo $sql;
     try {
       $result = mysql_query($sql);
     }

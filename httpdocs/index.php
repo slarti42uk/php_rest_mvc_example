@@ -20,6 +20,7 @@ include ("../app/lib/request.php");
 $routes = array('students' => array(
   '/\/(students)\/([0-9]+)\/(edit)/',
   '/\/(students)\/([0-9]+)\/(update)/',
+  '/\/(students)\/([0-9]+)\/(destroy)/',
   '/\/(students)\/([0-9]+)/',
   '/\/(students)\/(create)/',
   '/\/(students)\/(new)/'
@@ -62,7 +63,10 @@ switch($route['action']){
   case 'update':
     $controller->set_resource($_POST);
     break;
-  case 'delete':
+  case 'destroy':
+    echo 'destroy called';
+    $single = $instance->find($route['data']);
+    $controller->set_resource($single);
     break;
   default:
     header("HTTP/1.0 404 Not Found");

@@ -85,7 +85,7 @@ class Request
       $route = preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
       if ($route)
       {
-        // var_dump($matches);
+        var_dump($matches);
         $route = $matches[0];
         break;
       }
@@ -105,6 +105,10 @@ class Request
         break;
       case (isset($matches[2]) && is_numeric($matches[2]) && isset($matches[3] ) && $matches[3] == 'update'):  
         $this->route['action'] = "update";
+        $this->route['data'] = (int) $matches[2];
+        break;
+      case (isset($matches[2]) && is_numeric($matches[2]) && isset($matches[3] ) && $matches[3] == 'destroy'):  
+        $this->route['action'] = "destroy";
         $this->route['data'] = (int) $matches[2];
         break;
       case (isset($matches[2]) && is_numeric($matches[2])):  

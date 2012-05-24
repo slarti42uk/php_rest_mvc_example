@@ -24,4 +24,13 @@ class Helper
       return $str . "s";
     }
   }
+  
+  static function singular($str)
+  {
+    if (substr($str, -1) == "s")
+    {
+      return substr($str, 0, -1) ;
+    }
+    
+  }
 }

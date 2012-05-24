@@ -64,7 +64,6 @@ switch($route['action']){
     $controller->set_resource($_POST);
     break;
   case 'destroy':
-    echo 'destroy called';
     $single = $instance->find($route['data']);
     $controller->set_resource($single);
     break;

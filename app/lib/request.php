@@ -85,7 +85,7 @@ class Request
       $route = preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
       if ($route)
       {
-        var_dump($matches);
+        // var_dump($matches);
         $route = $matches[0];
         break;
       }

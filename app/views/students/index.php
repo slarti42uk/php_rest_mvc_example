@@ -16,7 +16,7 @@ foreach ($resource as $student):
   <td><?= $student->last_name ?></td>
   <td><a href="/students/<?= $student->id ?>">View</a></td>
   <td><a href="/students/<?= $student->id ?>/edit">Edit</a></td>
-  <td><a href="/students/<?= $student->id ?>/destroy">Delete</a></td>
+  <td><a href="/students/<?= $student->id ?>/destroy" data-type="destroy">Delete</a></td>
 </tr>
 <?php
 endforeach;

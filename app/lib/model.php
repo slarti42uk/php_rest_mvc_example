@@ -49,19 +49,24 @@ class Model
     $collection = array();
     $sql = sprintf("SELECT * FROM %s", $this->get_table_name());
     $rows = $this->select($sql);
-    foreach ($rows as $row)
+    if ($rows != NULL)
     {
-      $class = get_class($this);
-      $instance = new $class();
-      foreach ($row as $field => $value)
+      foreach ($rows as $row)
       {
-        $instance->$field = $value;
-      }
+        $class = get_class($this);
+        $instance = new $class();
+        foreach ($row as $field => $value)
+        {
+          $instance->$field = $value;
+        }
       
-      $collection[] = $instance;
+        $collection[] = $instance;
+      }
+      // var_dump( $collection);
+      return $collection;
+    
     }
-    // var_dump( $collection);
-    return $collection;
+    return false;
   }
   
   public function destroy()

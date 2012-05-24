@@ -27,6 +27,8 @@ class Controller
   public function render()
   {
     $resource = $this->resource;
+    if(!$resource) $resource= array();
+    
     ob_start();
     switch ($this->action)
     {

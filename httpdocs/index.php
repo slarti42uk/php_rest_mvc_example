@@ -19,6 +19,7 @@ include ("../app/lib/request.php");
 // I'm using mod_rewrite to deal with routing and this array gives the allowed routes in the form of regex
 $routes = array('students' => array(
   '/\/(students)\/([0-9]+)\/(edit)/',
+  '/\/(students)\/([0-9]+)\/(update)/',
   '/\/(students)\/([0-9]+)/',
   '/\/(students)\/(create)/',
   '/\/(students)\/(new)/'
@@ -37,6 +38,8 @@ $controller = new $resource("../app/views/" . strtolower($resource) . "/", $resp
 $instance = new $model();
 
 $route = $request->get_route();
+// echo $route['action'];
+$controller->set_action($route['action']);
 switch($route['action']){
   case 'index':
     $collection = $instance->all();
@@ -53,8 +56,11 @@ switch($route['action']){
     $controller->set_resource($single);
     break;
   case 'edit':
+    $single = $instance->find($route['data']);
+    $controller->set_resource($single);
     break;
   case 'update':
+    $controller->set_resource($_POST);
     break;
   case 'delete':
     break;

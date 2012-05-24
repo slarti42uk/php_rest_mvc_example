@@ -66,7 +66,9 @@ class Model
   
   public function save()
   {
-    $sql = sprintf("INSERT INTO %s SET ", $this->get_table_name());
+    $isNew = empty($this->id) ? true : false;
+    $command = $isNew ? "INSERT INTO" : "UPDATE";
+    $sql = '';
     $sep = '';
     foreach ($this as $key => $value) {
       if (is_string($key) && is_string($value))
@@ -75,8 +77,8 @@ class Model
         $sep = ', ';
       }
     }
-    echo $sql;
-    return $this->insert($sql);
+    // echo $sql;
+    return $isNew ? $this->insert($sql) : $this->update($this->id, $sql);
   }
   
   private function get_table_name()
@@ -84,8 +86,12 @@ class Model
     return strtolower(Helper::pluralise(get_class($this)));
   }
   
-  private function insert($sql)
+  private function insert($dataSql)
   {
+    $sql = sprintf("INSERT INTO %s SET ", $this->get_table_name());
+    $sql .= $dataSql;
+    
+    // echo $sql;
     try {
       $result = mysql_query($sql);
     }
@@ -94,6 +100,23 @@ class Model
     }
     return $result;
   }
+  
+  private function update($id, $dataSql)
+  {
+    $sql = sprintf("UPDATE %s SET ", $this->get_table_name());
+    $sql .= $dataSql;
+    $sql .= sprintf(" WHERE `id` = '%d'", mysql_real_escape_string($id));
+    // echo $sql;
+    try {
+      $result = mysql_query($sql);
+    }
+    catch(Exception $e) {
+      echo $e->getMessage();
+    }
+    return $result;
+  }
+  
+
   
   private function select($sql)
   {

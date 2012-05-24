@@ -8,7 +8,7 @@ class Controller
   
   function __construct($view_path, $response_type)
   {
-    $this->request_method = $_SERVER["REQUEST_METHOD"];
+    $this->request_method = strtolower($_SERVER["REQUEST_METHOD"]);
     $this->view_path = $view_path;
     $this->response_type = $response_type;
   }
@@ -18,20 +18,29 @@ class Controller
     $this->resource = $resource;
   }
   
+  public function set_action($action)
+  {
+    $this->action = $action;
+  }
+  
+  
   public function render()
   {
     $resource = $this->resource;
     ob_start();
-    switch (true)
+    switch ($this->action)
     {
-      case (is_object($resource) && is_null($resource->id)): // then it's new
+      case "new": // then it's new
         require_once($this->view_path . "/new.php");
         break;
-      case (is_array($resource) && isset($resource[0])): // then it's the listing for all records
+      case "index": // then it's the listing for all records
         require_once($this->view_path . "/index.php");
         break;
-      case is_object($resource):
+      case "read":
         require_once($this->view_path . "/show.php"); 
+        break;
+      case "edit":
+        require_once($this->view_path . "/edit.php"); 
         break;
     }
     $output =  ob_get_contents();

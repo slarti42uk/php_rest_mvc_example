@@ -36,8 +36,8 @@ class Request
     switch($uri_parts[0])
     {
       case (preg_match('/students(?:.*)/', $uri_parts[0]) ? true : false):
-        // var_dump($matches);
         $this->resource_name = 'Students';
+        // echo $this->resource_name;
         $this->set_model(Helper::singular($this->resource_name));
         return $this->resource_name;
         break;
@@ -81,6 +81,7 @@ class Request
   
   public function set_route()
   {
+    var_dump($this->routes[strtolower($this->resource_name)]);
     foreach ($this->routes[strtolower($this->resource_name)] as $pattern) {
       $route = preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
       if ($route)
@@ -98,6 +99,14 @@ class Request
         break;
       case (isset($matches[2]) && $matches[2] == "create" && strtolower($_SERVER["REQUEST_METHOD"]) == "post"):
         $this->route['action'] = "create";
+        break;
+      case (isset($matches[2]) && is_numeric($matches[2]) && isset($matches[3] ) && $matches[3] == 'edit'):  
+        $this->route['action'] = "edit";
+        $this->route['data'] = (int) $matches[2];
+        break;
+      case (isset($matches[2]) && is_numeric($matches[2]) && isset($matches[3] ) && $matches[3] == 'update'):  
+        $this->route['action'] = "update";
+        $this->route['data'] = (int) $matches[2];
         break;
       case (isset($matches[2]) && is_numeric($matches[2])):  
         $this->route['action'] = "read";

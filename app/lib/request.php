@@ -81,7 +81,6 @@ class Request
   
   public function set_route()
   {
-    var_dump($this->routes[strtolower($this->resource_name)]);
     foreach ($this->routes[strtolower($this->resource_name)] as $pattern) {
       $route = preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
       if ($route)

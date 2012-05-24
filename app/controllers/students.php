@@ -25,23 +25,22 @@ class Students extends Controller
   
   public function set_resource($resource)
   {
-    // var_dump($resource);
     parent::set_resource($resource);
     
-    if (is_array($resource) && $this->request_method == "post" && isset($_POST['_method']) && strtolower($_POST['_method']) == 'put') //Then this is the POST data
+    if ($this->action == "create" || $this->action == "update") //Then this is the POST data
     {
-      /**
-       * this handles create
-       */
       // need to sanitise the input here
       $student = new Student();
-      $student->find($_POST['id']);
+      if ($this->action == "update")
+      {
+        $student->find($_POST['id']);
+      }
       foreach ($resource as $key => $value) {
         // check the key is safe for a start
         try{
           if (!in_array($key, $this->attr_accessible))
           {
-            throw new Exception("Unknown field");
+            throw new Exception("Cannot set field");
           }
           $student->$key = $value;
         }
@@ -53,31 +52,5 @@ class Students extends Controller
       // now redirect
       header("Location: /students");
     }
-    else if (is_array($resource) && $this->request_method == "post") //Then this is the POST data
-    {
-      /**
-       * this handles create
-       */
-       
-      // need to sanitise the input here
-      $student = new Student();
-      foreach ($resource as $key => $value) {
-        // check the key is safe for a start
-        try{
-          if (!in_array($key, $this->attr_accessible))
-          {
-            throw new Exception("Unknown field");
-          }
-          $student->$key = $value;
-        }
-        catch (Exception $e) {
-           $e->getMessage();
-        }
-      }
-      $student->save();
-      // now redirect
-      header("Location: /students");
-    }
   }
-  
 }

@@ -12,8 +12,8 @@ class Request
   
   public function __construct($routes)
   {
-    $this->set_resource();
     $this->routes = $routes;
+    $this->set_resource();
     $this->set_route();
     if ($this->model_name === false || $this->resource_name === false)
     {
@@ -81,13 +81,17 @@ class Request
   
   public function set_route()
   {
-    foreach ($this->routes[strtolower($this->resource_name)] as $pattern) {
-      $route = preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
-      if ($route)
-      {
-        // var_dump($matches);
-        $route = $matches[0];
-        break;
+    $idx = strtolower($this->resource_name);
+    if (isset($this->routes[$idx]))
+    {
+      foreach ($this->routes[$idx] as $pattern) {
+        $route = preg_match($pattern, $_SERVER['REQUEST_URI'], $matches);
+        if ($route)
+        {
+          // var_dump($matches);
+          $route = $matches[0];
+          break;
+        }
       }
     }
     // echo $route;
